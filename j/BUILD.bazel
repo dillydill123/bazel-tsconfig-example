@@ -1,0 +1,23 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project", "ts_config")
+
+load("@npm//:defs.bzl", "npm_link_all_packages")
+npm_link_all_packages()
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    deps = ["//:tsconfig"],
+)
+
+ts_project(
+    name = "tsp",
+    srcs = ["ts_program.ts", "ts_module.ts"],
+    deps = [
+        ":node_modules/@types/node",
+        ":node_modules/@types/is-number",
+        ":node_modules/is-number",
+    ],
+    tsconfig = "//:tsconfig",
+    # Switch to this one, and `bazel build //j:tsp` will work
+    # tsconfig = ":tsconfig",
+)

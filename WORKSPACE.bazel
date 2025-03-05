@@ -1,0 +1,48 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+http_archive(
+    name = "aspect_bazel_lib",
+    sha256 = "a272d79bb0ac6b6965aa199b1f84333413452e87f043b53eca7f347a23a478e8",
+    strip_prefix = "bazel-lib-2.9.3",
+    url = "https://github.com/bazel-contrib/bazel-lib/releases/download/v2.9.3/bazel-lib-v2.9.3.tar.gz",
+)
+http_archive(
+    name = "rules_nodejs",
+    sha256 = "732aa2aeef9ba629cd7fa1cb30da07e6b696ed78706b08d84d5d8601982f38b1",
+    strip_prefix = "rules_nodejs-6.3.3",
+    url = "https://github.com/bazel-contrib/rules_nodejs/releases/download/v6.3.3/rules_nodejs-v6.3.3.tar.gz",
+)
+http_archive(
+    name = "aspect_rules_js",
+    sha256 = "d66f8abf914a0454a69181b7b17acaae56d7b0e2784cb26b40cb3273c4d836d1",
+    strip_prefix = "rules_js-2.2.0",
+    url = "https://github.com/aspect-build/rules_js/releases/download/v2.2.0/rules_js-v2.2.0.tar.gz",
+)
+http_archive(
+    name = "aspect_rules_ts",
+    sha256 = "4263532b2fb4d16f309d80e3597191a1cb2fb69c19e95d91711bd6b97874705e",
+    strip_prefix = "rules_ts-3.5.0",
+    url = "https://github.com/aspect-build/rules_ts/releases/download/v3.5.0/rules_ts-v3.5.0.tar.gz",
+)
+
+load("@aspect_bazel_lib//lib:repositories.bzl", "aspect_bazel_lib_dependencies", "aspect_bazel_lib_register_toolchains")
+
+aspect_bazel_lib_dependencies()
+aspect_bazel_lib_register_toolchains()
+
+load("@rules_nodejs//nodejs:repositories.bzl", "nodejs_register_toolchains")
+load("@aspect_rules_js//npm:repositories.bzl", "npm_translate_lock")
+
+
+nodejs_register_toolchains(node_version = "20.10.0")
+
+npm_translate_lock(
+    name = "npm",
+    pnpm_lock = "//:pnpm-lock.yaml",
+    pnpm_version = "8.15.9",
+)
+
+load("@npm//:repositories.bzl", "npm_repositories")
+npm_repositories()
+
+load("@aspect_rules_ts//ts/private:npm_repositories.bzl", "npm_dependencies")
+npm_dependencies(ts_version = "5.3.3")

@@ -1,0 +1,9 @@
+{
+    "devDependencies": {
+        "@types/node": "20.10.0",
+        "@types/is-number": "7.0.0"
+    },
+    "dependencies": {
+        "is-number": "7.0.0"
+    }
+}

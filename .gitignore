@@ -1,0 +1,4 @@
+bazel-bazel-tsconfig-example
+bazel-bin
+bazel-out
+bazel-testlogs
